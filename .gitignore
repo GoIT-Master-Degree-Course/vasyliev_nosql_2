@@ -1,0 +1,11 @@
+.env
+.venv
+
+data/
+data/arxiv-metadata-oai-snapshot.json
+data/arxiv.zip
+data/arxiv_subset.parquet
+
+embeddings/
+
+log.txt
