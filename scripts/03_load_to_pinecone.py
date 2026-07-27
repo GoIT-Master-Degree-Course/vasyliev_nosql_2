@@ -50,7 +50,7 @@ index = pc.Index(INDEX_NAME)
 # Завантажуємо ембединги та документи
 embeddings = np.load(INPUT_EMBEDDINGS)
 documents = pd.read_parquet(INPUT_PARQUET)
-documents['year'] = documents['year'].astype(str)  # Перетворюємо рік на string для збереження в метаданих
+# documents['year'] = documents['year'].astype(str)  # Перетворюємо рік на string для збереження в метаданих
 
 # Перевірка відповідності кількості ембедингів та документів
 if len(embeddings) != len(documents):
@@ -59,9 +59,15 @@ if len(embeddings) != len(documents):
 # Отримуємо ембединги і документи та записуємо в індекс
 vectors_to_upsert = [
     {
-        "id": documents.iloc[doc_idx]["id"],
+        "id": f"paper_{doc_idx}",
         "values": embeddings[doc_idx].tolist(),
-        "metadata": {key: value for key, value in documents.iloc[doc_idx].items() if pd.notnull(value)},
+        "metadata": {
+            "arxiv_id": documents.iloc[doc_idx]["id"],
+            "title": documents.iloc[doc_idx]["title"],
+            "authors": documents.iloc[doc_idx]["authors"][:200],  # обмежуємо довжину списку авторів для метаданих
+            "abstract": documents.iloc[doc_idx]["abstract"][:500],  # обмежуємо довжину абстракту для метаданих
+            "year": int(documents.iloc[doc_idx]["year"]),
+        },
     }
     for doc_idx in tqdm(range(0, len(documents)), desc="Підготовка векторів до upsert")
 ]
@@ -78,4 +84,4 @@ for ids_vectors_batch in tqdm(batch(vectors_to_upsert, batch_size=BATCH_SIZE), d
                 raise
 
 
-print(f"Записано {len(vectors_to_upsert)} векторів у namespace '{NAMESPACE}'")
+print(f"Записано {len(vectors_to_upsert)} векторів у namespace '{NAMESPACE}' індексу '{INDEX_NAME}'")
