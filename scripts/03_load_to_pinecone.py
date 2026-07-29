@@ -64,6 +64,7 @@ vectors_to_upsert = [
         "metadata": {
             "arxiv_id": documents.iloc[doc_idx]["id"],
             "title": documents.iloc[doc_idx]["title"],
+            "category": documents.iloc[doc_idx]["category"],
             "authors": documents.iloc[doc_idx]["authors"][:200],  # обмежуємо довжину списку авторів для метаданих
             "abstract": documents.iloc[doc_idx]["abstract"][:500],  # обмежуємо довжину абстракту для метаданих
             "year": int(documents.iloc[doc_idx]["year"]),
