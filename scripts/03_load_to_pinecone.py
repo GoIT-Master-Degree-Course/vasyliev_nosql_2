@@ -37,7 +37,7 @@ if INDEX_NAME not in pc.list_indexes().names():
 # Створення serverless-індексу
     pc.create_index(
         name=INDEX_NAME,
-        dimension=768,        # повинна збігатися з розмірністю моделі
+        dimension=VECTOR_DIM,        # повинна збігатися з розмірністю моделі
         metric="cosine",
         spec=ServerlessSpec(
             cloud="aws",

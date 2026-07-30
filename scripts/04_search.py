@@ -58,7 +58,7 @@ results = index.query(
     # },
 )
 
-print(f"Запит: '{query}'\\n")
+print(f"Запит: '{query}'\n")
 for match in results.matches:
     print(f"ID: {match.id} | Score: {match.score:.4f}")
     print(f"  Title: {match.metadata['title']}")
